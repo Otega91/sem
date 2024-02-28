@@ -43,7 +43,7 @@ User initiates the request to retrieve a list of countries organized by populati
 
 ## EXTENSIONS
 
-3. **No Population Data Available**:
+1. **No Population Data Available**:
     1. System display there is no population data available.
 
 ## SUB-VARIATIONS
