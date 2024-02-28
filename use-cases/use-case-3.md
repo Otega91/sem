@@ -37,12 +37,10 @@ The researcher requests a report on country populations by region.
 
 ## MAIN SUCCESS SCENARIO
 
-1. Researcher requests a report listing countries by population within a specific region.
-2. System prompts the researcher to specify the region.
-3. Researcher provides the name of the region.
-4. System retrieves population data for all countries within the specified region.
-5. System organizes the data, sorting countries by population from largest to smallest.
-6. System generates and presents the report to the researcher.
+1. User accesses the system to retrieve a list of countries within a specific region, organized by population.
+2. System prompts the user to specify the region of interest.
+3. System executes a query to retrieve all countries within the specified region from the database along with their population data.
+4. System organizes the retrieved data by population, arranging countries from largest to smallest, and presents the organized list of countries to the user for analysis.
 
 ## EXTENSIONS
 

@@ -1,4 +1,4 @@
-# USE CASE: Retrieve Country Population Report by Continent
+# USE CASE: 2 Retrieve Country Population Report by Continent
 
 ## CHARACTERISTIC INFORMATION
 
@@ -37,12 +37,10 @@ The user requests a report on country populations by continent.
 
 ## MAIN SUCCESS SCENARIO
 
-1. User requests a report listing countries by population within a specific continent.
+1. User accesses the system to retrieve a list of countries organized by population within a specific continent.
 2. System prompts the user to specify the continent.
 3. User provides the name of the continent.
-4. System retrieves population data for all countries within the specified continent.
-5. System organizes the data, sorting countries by population from largest to smallest.
-6. System generates and presents the report to the user.
+4. System presents the organized list of countries to the user for analysis.
 
 ## EXTENSIONS
 
