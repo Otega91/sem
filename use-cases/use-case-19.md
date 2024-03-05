@@ -43,11 +43,11 @@ A request to retrieve an organized list of capital cities in a region based on p
 
 ## MAIN SUCCESS SCENARIO
 
-The user accesses the system to retrieve a list of capital cities in a specific region.
-The user specifies the region for which they want to retrieve the list of capital cities.
-The system executes a query to retrieve all capital cities within the specified region from the database along with their population data.
-The system organizes the retrieved capital cities by population, arranging them from largest to smallest.
-The system presents the organized list of capital cities within the specified region to the regional planner for analysis and planning.
+1. The user accesses the system to retrieve a list of capital cities in a specific region.
+2. The user specifies the region for which they want to retrieve the list of capital cities.
+3. The system executes a query to retrieve all capital cities within the specified region from the database along with their population data.
+4. The system organizes the retrieved capital cities by population, arranging them from largest to smallest.
+5. The system presents the organized list of capital cities within the specified region to the regional planner for analysis and planning.
 
 ## EXTENSIONS
 
