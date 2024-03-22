@@ -8,10 +8,6 @@ public class App
      * Connection to MySQL database.
      */
 
-
-    /**
-     * Connect to the MySQL database.
-     */
     public static void main(String[] args)
     {
         try
