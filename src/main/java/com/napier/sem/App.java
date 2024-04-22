@@ -31,7 +31,11 @@ public class App
 
 
         //Get ALl Countries in a Continent From Largest to Smallest
-        ArrayList<Country> countries2 = a.getCountriesByContinent("Asia");
+//        ArrayList<Country> countries2 = a.getCountriesByContinent("Asia");
+
+
+        //Get ALl Countries in a Region From Largest to Smallest
+        ArrayList<Country> countries3 = a.getCountriesByRegion("Caribbean");
 
     }
 
@@ -82,6 +86,46 @@ public class App
             String sql = "SELECT * FROM country WHERE Continent = ? ORDER BY Population DESC";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, continent);
+
+            // Execute query
+            ResultSet rs = stmt.executeQuery();
+
+            // Process result set
+            ArrayList<Country> countries = new ArrayList<>();
+            while (rs.next()) {
+                Country country = new Country();
+                country.code = rs.getString("Code");
+                country.name = rs.getString("Name");
+                country.continent = rs.getString("Continent");
+                country.region = rs.getString("Region");
+                country.surfaceArea = rs.getDouble("SurfaceArea");
+                country.indepYear = rs.getInt("IndepYear");
+                country.population = rs.getInt("Population");
+                country.capital = rs.getInt("Capital");
+                countries.add(country);
+            }
+
+            // Close resources
+            rs.close();
+            stmt.close();
+
+            printCountries(countries);
+
+            return countries;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get country details");
+            return null;
+        }
+    }
+
+
+    public ArrayList<Country> getCountriesByRegion(String region) {
+        try {
+            // Create SQL statement
+            String sql = "SELECT * FROM country WHERE Region = ? ORDER BY Population DESC";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, region);
 
             // Execute query
             ResultSet rs = stmt.executeQuery();
