@@ -14,12 +14,7 @@ public class App
         a.connect();
 
 
-
-        ArrayList<Country> countries = a.getAllCountries();
-
-        System.out.println(countries.size());
-
-        a.printCountries(countries);
+        a.Init(a);
 
 
         // Disconnect from database
@@ -29,6 +24,16 @@ public class App
     private Connection con = null;
 
 
+    public void Init(App a){
+
+        // Get All Countries From Largest to Smallest
+//        ArrayList<Country> countries1 = a.getAllCountries();
+
+
+        //Get ALl Countries in a Continent From Largest to Smallest
+        ArrayList<Country> countries2 = a.getCountriesByContinent("Asia");
+
+    }
 
 
 
@@ -57,6 +62,51 @@ public class App
 
                 countries.add(country);
             }
+
+            printCountries(countries);
+
+            return countries;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get country details");
+            return null;
+        }
+    }
+
+
+
+    public ArrayList<Country> getCountriesByContinent(String continent) {
+        try {
+            // Create SQL statement
+            String sql = "SELECT * FROM country WHERE Continent = ? ORDER BY Population DESC";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, continent);
+
+            // Execute query
+            ResultSet rs = stmt.executeQuery();
+
+            // Process result set
+            ArrayList<Country> countries = new ArrayList<>();
+            while (rs.next()) {
+                Country country = new Country();
+                country.code = rs.getString("Code");
+                country.name = rs.getString("Name");
+                country.continent = rs.getString("Continent");
+                country.region = rs.getString("Region");
+                country.surfaceArea = rs.getDouble("SurfaceArea");
+                country.indepYear = rs.getInt("IndepYear");
+                country.population = rs.getInt("Population");
+                country.capital = rs.getInt("Capital");
+                countries.add(country);
+            }
+
+            // Close resources
+            rs.close();
+            stmt.close();
+
+            printCountries(countries);
+
             return countries;
         } catch (Exception e) {
             System.out.println(e.getMessage());
