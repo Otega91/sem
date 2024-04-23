@@ -35,7 +35,12 @@ public class App
 
 
         //Get ALl Countries in a Region From Largest to Smallest
-        ArrayList<Country> countries3 = a.getCountriesByRegion("Caribbean");
+//        ArrayList<Country> countries3 = a.getCountriesByRegion("Caribbean");
+
+
+        //The top N populated countries in the world.
+        ArrayList<Country> countries4 = a.getTopPopulatedCountries(5);
+
 
     }
 
@@ -98,8 +103,6 @@ public class App
                 country.name = rs.getString("Name");
                 country.continent = rs.getString("Continent");
                 country.region = rs.getString("Region");
-                country.surfaceArea = rs.getDouble("SurfaceArea");
-                country.indepYear = rs.getInt("IndepYear");
                 country.population = rs.getInt("Population");
                 country.capital = rs.getInt("Capital");
                 countries.add(country);
@@ -138,8 +141,6 @@ public class App
                 country.name = rs.getString("Name");
                 country.continent = rs.getString("Continent");
                 country.region = rs.getString("Region");
-                country.surfaceArea = rs.getDouble("SurfaceArea");
-                country.indepYear = rs.getInt("IndepYear");
                 country.population = rs.getInt("Population");
                 country.capital = rs.getInt("Capital");
                 countries.add(country);
@@ -160,24 +161,90 @@ public class App
     }
 
 
+    public ArrayList<Country> getTopPopulatedCountries(int N) {
+        try {
+            // Create SQL statement
+            String sql = "SELECT * FROM country ORDER BY Population DESC LIMIT ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, N);
 
+            // Execute query
+            ResultSet rs = stmt.executeQuery();
 
+            // Process result set
+            ArrayList<Country> countries = new ArrayList<>();
+            while (rs.next()) {
+                Country country = new Country();
+                country.code = rs.getString("Code");
+                country.name = rs.getString("Name");
+                country.continent = rs.getString("Continent");
+                country.region = rs.getString("Region");
+                country.population = rs.getInt("Population");
+                country.capital = rs.getInt("Capital");
+                countries.add(country);
+            }
 
+            // Close resources
+            rs.close();
+            stmt.close();
 
-    //Print Function//
-    public void printCountries(ArrayList<Country> countries) {
-        // Print header
-        System.out.println(String.format("%-5s %-52s %-15s %-26s %-10s", "Code", "Name", "Continent", "Region", "Population"));
-        // Loop over all countries in the list
-        for (Country country : countries) {
-            String countryString =
-                    String.format("%-5s %-52s %-15s %-26s %,10d",
-                            country.code, country.name, country.continent, country.region, country.population);
-            System.out.println(countryString);
+            printCountries(countries);
+
+            return countries;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get country details");
+            return null; // Handle the exception according to your application's requirements
         }
     }
 
 
+
+    //Dependent Query Function//
+    private int getTotalCityPopulation(String countryCode) {
+        try {
+            // Create SQL statement
+            String sql = "SELECT Population FROM city WHERE CountryCode = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, countryCode);
+
+            // Execute query
+            ResultSet rs = stmt.executeQuery();
+
+            // Process result set
+            if (rs.next()) {
+                return rs.getInt("Population");
+            } else {
+                return 0; // Return 0 if no city population found for the country
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get city details");
+            return 0; // Handle the exception according to your application's requirements
+        }
+    }
+
+
+
+    //Print Function//
+
+    public void printCountries(ArrayList<Country> countries) {
+        // Print header
+        System.out.println(String.format("%-52s %-15s %-26s %-20s %-20s %-12s %-12s", "Name", "Continent", "Region", "Total Population", "City Population", "Living City %", "Not Living City %"));
+        // Loop over all countries in the list
+        for (Country country : countries) {
+            int totalPopulation = country.population;
+            int cityPopulation = getTotalCityPopulation(country.code);
+            int ruralPopulation = totalPopulation - cityPopulation;
+            double cityPercentage = ((double) cityPopulation / totalPopulation) * 100;
+            double ruralPercentage = 100 - cityPercentage;
+
+            String countryString =
+                    String.format("%-52s %-15s %-26s %,20d %,20d %,12f%% %,12f%%",
+                            country.name, country.continent, country.region, totalPopulation, cityPopulation, cityPercentage, ruralPercentage);
+            System.out.println(countryString);
+        }
+    }
 
     //Connection Functions//
 
