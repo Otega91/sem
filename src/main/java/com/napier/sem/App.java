@@ -35,11 +35,15 @@ public class App
 
 
         //Get ALl Countries in a Region From Largest to Smallest
-//        ArrayList<Country> countries3 = a.getCountriesByRegion("Caribbean");
+        ArrayList<Country> countries3 = a.getCountriesByRegion("Caribbean");
 
 
         //The top N populated countries in the world.
         ArrayList<Country> countries4 = a.getTopPopulatedCountries(5);
+
+
+        //The top N populated countries in a continent
+//        ArrayList<Country> countries5 = a.getTopPopulatedCountriesInContinent("Caribbean",5);
 
 
     }
@@ -199,6 +203,44 @@ public class App
     }
 
 
+    public ArrayList<Country> getTopPopulatedCountriesInContinent(String continent, int N) {
+        try {
+            // Create SQL statement
+            String sql = "SELECT * FROM country WHERE Continent = ? ORDER BY Population DESC LIMIT ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, continent);
+            stmt.setInt(2, N);
+
+            // Execute query
+            ResultSet rs = stmt.executeQuery();
+
+            // Process result set
+            ArrayList<Country> countries = new ArrayList<>();
+            while (rs.next()) {
+                Country country = new Country();
+                country.code = rs.getString("Code");
+                country.name = rs.getString("Name");
+                country.continent = rs.getString("Continent");
+                country.region = rs.getString("Region");
+                country.population = rs.getInt("Population");
+                country.capital = rs.getInt("Capital");
+                countries.add(country);
+            }
+
+            // Close resources
+            rs.close();
+            stmt.close();
+
+            printCountries(countries);
+
+
+            return countries;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get country details");
+            return null; // Handle the exception according to your application's requirements
+        }
+    }
 
     //Dependent Query Function//
     private int getTotalCityPopulation(String countryCode) {
