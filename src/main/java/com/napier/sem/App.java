@@ -88,7 +88,6 @@ public class App
     }
 
 
-
     public ArrayList<Country> getCountriesByContinent(String continent) {
         try {
             // Create SQL statement
@@ -267,7 +266,6 @@ public class App
     }
 
 
-
     //Print Function//
 
     public void printCountries(ArrayList<Country> countries) {
@@ -284,9 +282,11 @@ public class App
             String countryString =
                     String.format("%-52s %-15s %-26s %,20d %,20d %,12f%% %,12f%%",
                             country.name, country.continent, country.region, totalPopulation, cityPopulation, cityPercentage, ruralPercentage);
+
             System.out.println(countryString);
         }
     }
+
 
     //Connection Functions//
 
@@ -345,3 +345,4 @@ public class App
     }
 
 }
+

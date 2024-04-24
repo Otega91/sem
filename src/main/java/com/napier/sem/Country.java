@@ -9,5 +9,4 @@ public class Country {
     public int population;
     public Integer capital;
 
-
 }
